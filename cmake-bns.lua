@@ -1,6 +1,6 @@
 ---
--- Premake 5.x build configuration script
--- Use this script to configure the project with Premake5.
+-- cmake-bns build configuration script
+-- Use this script to configure the project with cmake-bns.
 ---
 
 --
@@ -218,7 +218,7 @@
 		print("Current git tag: ", git_tag)
 	end
 
-	solution "Premake5"
+	solution "cmake-bns"
 		configurations { "Release", "Debug" }
 		location ( _OPTIONS["to"] )
 
@@ -306,8 +306,8 @@
 			systemversion "latest:latest"
 			consumewinrtextension "false"
 
-	project "Premake5"
-		targetname  "premake5"
+	project "cmake-bns"
+		targetname  "cmake-bns"
 		language    "C"
 		kind        "ConsoleApp"
 

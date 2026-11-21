@@ -5,7 +5,7 @@
 -- at start of file) number of projects, files, and configurations. Then
 -- generates them all while profiling the result.
 --
--- Run it like normal, i.e. `premake5 --file=test_stress.lua gmake`. The
+-- Run it like normal, i.e. `cmake-bns --file=test_stress.lua gmake`. The
 -- profile results will be placed at `build/profile.txt`.
 --
 -- Copyright (c) 2009-2015 Jess Perkins and the Premake project
@@ -54,7 +54,7 @@
 --
 -- Install profiling extensions
 -- TODO: would be nice to build these into the core exe, and could be
---       triggered with a flag, i.e. `premake5 --profile gmake`
+--       triggered with a flag, i.e. `cmake-bns --profile gmake`
 --
 
 	dofile("pepperfish_profiler.lua")

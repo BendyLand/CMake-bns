@@ -38,7 +38,7 @@ Please provide a [minimal, reproducible example](https://stackoverflow.com/help/
 - [ ] Other (Please list below)
 
 **What version of Premake are you using?**
-`premake5 --version` will show you the version. If you are running a "-dev" version, please make sure you are up to date with the latest master branch.
+`cmake-bns --version` will show you the version. If you are running a "-dev" version, please make sure you are up to date with the latest master branch.
 
 **Anything else we should know?**
 Add any other context about the problem here.

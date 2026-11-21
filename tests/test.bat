@@ -1,4 +1,4 @@
 @echo off
 pushd "%~dp0"
-..\bin\debug\premake5.exe /scripts=.. /file=..\premake5.lua %* test
+..\bin\debug\cmake-bns.exe /scripts=.. /file=..\cmake-bns.lua %* test
 popd

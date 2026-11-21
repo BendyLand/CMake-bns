@@ -1,7 +1,7 @@
 --
 -- actions/init/init_steps.lua
 -- Renders the staged TOML skeleton files (Step 1 mandatory + Steps 2..4 optional)
--- and validates user-submitted TOML answers before emitting premake5.lua.
+-- and validates user-submitted TOML answers before emitting cmake-bns.lua.
 --
 
 	local p = premake
@@ -214,7 +214,7 @@
 
 		local lines = {
 			"# =============================================================================",
-			"# PREMAKE INIT - STEP 1 OF 4: WORKSPACE & TARGETS (MANDATORY)",
+			"# CMAKE-BNS INIT - STEP 1 OF 4: WORKSPACE & TARGETS (MANDATORY)",
 			"#",
 			"# Fill in or review the fields below, then save and close your editor.",
 			"# Lines starting with '#' are ignored. Delete all content to abort.",
@@ -402,7 +402,7 @@
 
 		local lines = {
 			"# =============================================================================",
-			"# PREMAKE INIT - STEP 2 OF 4: DEPENDENCIES & LINKING (OPTIONAL)",
+			"# CMAKE-BNS INIT - STEP 2 OF 4: DEPENDENCIES & LINKING (OPTIONAL)",
 			"#",
 			"# Enter any external libraries, include/lib directories, or sibling target links.",
 			"# Leave fields blank ([] / \"\") if unused. Save and close when finished.",
@@ -571,7 +571,7 @@
 
 		local lines = {
 			"# =============================================================================",
-			"# PREMAKE INIT - STEP 3 OF 4: COMPILER SETTINGS & OS OVERRIDES (OPTIONAL)",
+			"# CMAKE-BNS INIT - STEP 3 OF 4: COMPILER SETTINGS & OS OVERRIDES (OPTIONAL)",
 			"#",
 			"# Leave fields at their blank defaults (\"\", [], false) to keep toolchain defaults.",
 			"# =============================================================================",
@@ -767,7 +767,7 @@
 
 		local lines = {
 			"# =============================================================================",
-			"# PREMAKE INIT - STEP 4 OF 4: BUILD HOOKS & DEBUGGER SETTINGS (OPTIONAL)",
+			"# CMAKE-BNS INIT - STEP 4 OF 4: BUILD HOOKS & DEBUGGER SETTINGS (OPTIONAL)",
 			"#",
 			"# Leave fields blank (\"\" / []) if unused. Portable command tokens:",
 			"#   {COPYFILE} path/to/src %{cfg.targetdir}/dst",
@@ -888,18 +888,18 @@
 
 
 -- =============================================================================
--- UNIFIED BLANK CONFIG TEMPLATE (`premake5 init --blank`)
+-- UNIFIED BLANK CONFIG TEMPLATE (`cmake-bns init --blank`)
 -- =============================================================================
 
 	function steps.renderBlankConfig()
 		local lines = {
 			"# =============================================================================",
-			"# PREMAKE PROJECT CONFIGURATION (BLANK TEMPLATE)",
+			"# CMAKE-BNS PROJECT CONFIGURATION (BLANK TEMPLATE)",
 			"#",
 			"# 1. Fill in the fields marked REQUIRED below.",
 			"# 2. Everything past each OPTIONAL marker can stay blank (\"\", [], false).",
-			"# 3. Generate premake5.lua : premake5 init --from=premake.toml",
-			"#    Or build directly     : premake5 gmake   (or ninja, vs2022, xcode4)",
+			"# 3. Generate cmake-bns.lua : cmake-bns init --from=cmake-bns.toml",
+			"#    Or build directly      : cmake-bns gmake   (or ninja, vs2022, xcode4)",
 			"# =============================================================================",
 			"",
 			"[workspace]",
@@ -1224,7 +1224,7 @@
 
 
 ---
--- Render a single-file `premake.toml` pre-populated with all required and
+-- Render a single-file `cmake-bns.toml` pre-populated with all required and
 -- optional fields extracted from an existing CMake/Makefile build structure.
 ---
 	function steps.renderImportedConfig(state, sourceLabel)
@@ -1240,10 +1240,10 @@
 
 		local lines = {
 			"# =============================================================================",
-			"# PREMAKE PROJECT CONFIGURATION (IMPORTED FROM " .. (sourceLabel or "EXISTING BUILD"):upper() .. ")",
+			"# CMAKE-BNS PROJECT CONFIGURATION (IMPORTED FROM " .. (sourceLabel or "EXISTING BUILD"):upper() .. ")",
 			"#",
-			"# Generate premake5.lua : premake5 init --from=premake.toml",
-			"# Or build directly     : premake5 gmake   (or ninja, vs2022, xcode4)",
+			"# Generate cmake-bns.lua : cmake-bns init --from=cmake-bns.toml",
+			"# Or build directly      : cmake-bns gmake   (or ninja, vs2022, xcode4)",
 			"# =============================================================================",
 			"",
 			"[workspace]",

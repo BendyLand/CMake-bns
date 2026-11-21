@@ -4,8 +4,8 @@
 -- Copyright (c) 2002-2024 Jess Perkins and the Premake project
 --
 
-	local shorthelp     = "Type 'premake5 --help' for help"
-	local versionhelp   = "premake5 (Premake Build Script Generator) %s"
+	local shorthelp     = "Type 'cmake-bns --help' for help"
+	local versionhelp   = "cmake-bns (Premake Build Script Generator) %s"
 	local startTime     = os.clock()
 
 -- set main globals.
@@ -145,7 +145,7 @@
 ---
 
 	function m.runSystemScript()
-		dofileopt(_OPTIONS["systemscript"] or { "premake5-system.lua", "premake-system.lua" })
+		dofileopt(_OPTIONS["systemscript"] or { "cmake-bns-system.lua", "premake5-system.lua", "premake-system.lua" })
 		filter {}
 	end
 
@@ -156,7 +156,7 @@
 ---
 
 	function m.locateUserScript()
-		local defaults = { "premake5.lua", "premake4.lua" }
+		local defaults = { "cmake-bns.lua", "premake5.lua", "premake4.lua" }
 		for i = 1, #defaults do
 			if os.isfile(defaults[i]) then
 				_MAIN_SCRIPT = defaults[i]
@@ -205,7 +205,7 @@
 		-- Support passing --file=config.toml directly to any backend action
 		if _MAIN_SCRIPT and path.hasextension(_MAIN_SCRIPT, ".toml") and os.isfile(_MAIN_SCRIPT) then
 			if p.action.isConfigurable() and not _OPTIONS["help"] and not _OPTIONS["version"] then
-				local generatedLua = path.join(_MAIN_SCRIPT_DIR, "premake5.lua")
+				local generatedLua = path.join(_MAIN_SCRIPT_DIR, "cmake-bns.lua")
 				local ok = p.init.generateFromToml(_MAIN_SCRIPT, {
 					outputPath  = generatedLua,
 					skipBackend = true,
@@ -225,8 +225,14 @@
 		end
 
 		if p.action.isConfigurable() and not _OPTIONS["help"] and not _OPTIONS["version"] then
-			-- If premake.toml exists in the script directory, compile it to premake5.lua automatically
-			local defaultToml = path.join(_MAIN_SCRIPT_DIR, "premake.toml")
+			-- If cmake-bns.toml exists in the script directory, compile it to cmake-bns.lua automatically
+			local defaultToml = path.join(_MAIN_SCRIPT_DIR, "cmake-bns.toml")
+			if not os.isfile(defaultToml) then
+				local legacyToml = path.join(_MAIN_SCRIPT_DIR, "premake.toml")
+				if os.isfile(legacyToml) then
+					defaultToml = legacyToml
+				end
+			end
 			if os.isfile(defaultToml) then
 				local ok = p.init.generateFromToml(defaultToml, {
 					outputPath  = _MAIN_SCRIPT,

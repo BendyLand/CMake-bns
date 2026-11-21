@@ -2,7 +2,7 @@
 -- actions/init/_init.lua
 -- Interactive `git commit`-style TOML configuration wizard that scans the
 -- working directory, opens TOML skeletons in the user's text editor, emits a
--- valid premake5.lua, and optionally runs Premake's build-file backend.
+-- valid cmake-bns.lua, and optionally runs Premake's build-file backend.
 --
 
 	local p = premake
@@ -13,44 +13,44 @@
 	newoption {
 		trigger     = "editor",
 		value       = "CMD",
-		description = "Text editor command for `premake5 init` (defaults to $VISUAL / $EDITOR)"
+		description = "Text editor command for `cmake-bns init` (defaults to $VISUAL / $EDITOR)"
 	}
 
 	newoption {
 		trigger     = "backend",
 		value       = "ACTION",
-		description = "Immediately generate build files with ACTION after `premake5 init` (e.g. gmake, ninja, vs2022)"
+		description = "Immediately generate build files with ACTION after `cmake-bns init` (e.g. gmake, ninja, vs2022)"
 	}
 
 	newoption {
 		trigger     = "force",
-		description = "Overwrite existing premake5.lua without prompting during `premake5 init`"
+		description = "Overwrite existing cmake-bns.lua without prompting during `cmake-bns init`"
 	}
 
 	newoption {
 		trigger     = "init",
-		description = "Launch interactive configuration wizard before running action if premake5.lua is missing"
+		description = "Launch interactive configuration wizard before running action if cmake-bns.lua is missing"
 	}
 
 	newoption {
 		trigger     = "blank",
-		description = "Skip interactive setup and generate a blank premake.toml with all placeholder fields"
+		description = "Skip interactive setup and generate a blank cmake-bns.toml with all placeholder fields"
 	}
 
 	newoption {
 		trigger     = "from",
 		value       = "FILE",
-		description = "Non-interactively generate premake5.lua from a TOML config file (e.g. premake.toml)"
+		description = "Non-interactively generate cmake-bns.lua from a TOML config file (e.g. cmake-bns.toml)"
 	}
 
 	newoption {
 		trigger     = "import",
-		description = "Scan existing CMake/Makefile structure and write a pre-populated premake.toml without prompts"
+		description = "Scan existing CMake/Makefile structure and write a pre-populated cmake-bns.toml without prompts"
 	}
 
 	newoption {
 		trigger     = "auto",
-		description = "Scan existing CMake/Makefile (or directory) and generate premake5.lua non-interactively"
+		description = "Scan existing CMake/Makefile (or directory) and generate cmake-bns.lua non-interactively"
 	}
 
 
@@ -58,7 +58,7 @@
 -- Check whether stdin and stdout are attached to an interactive terminal.
 ---
 	function init.isInteractiveTerminal()
-		if os.getenv("PREMAKE_FORCE_INTERACTIVE") == "1" then
+		if os.getenv("CMAKE_BNS_FORCE_INTERACTIVE") == "1" or os.getenv("PREMAKE_FORCE_INTERACTIVE") == "1" then
 			return true
 		end
 		if os.ishost("windows") then
@@ -75,6 +75,7 @@
 	function init.resolveEditor(override)
 		local cmd = override
 			or _OPTIONS["editor"]
+			or os.getenv("CMAKE_BNS_EDITOR")
 			or os.getenv("PREMAKE_EDITOR")
 			or os.getenv("VISUAL")
 			or os.getenv("EDITOR")
@@ -226,7 +227,7 @@
 
 ---
 -- Execute a real Premake backend action (gmake, ninja, vs2022, xcode4, etc.)
--- directly against a newly generated premake5.lua script.
+-- directly against a newly generated cmake-bns.lua script.
 ---
 	function init.runBackend(actionName, scriptPath)
 		local act = p.action.get(actionName)
@@ -263,7 +264,7 @@
 
 
 ---
--- Run the full interactive TOML wizard, write premake5.lua, and optionally
+-- Run the full interactive TOML wizard, write cmake-bns.lua, and optionally
 -- invoke the real build-file generation backend.
 ---
 	function init.runWizard(opts)
@@ -271,7 +272,7 @@
 		local workDir = path.getabsolute(opts.workDir or os.getcwd())
 		local outFile = opts.outputPath
 			or (_OPTIONS["file"] and path.getabsolute(_OPTIONS["file"]))
-			or path.join(workDir, "premake5.lua")
+			or path.join(workDir, "cmake-bns.lua")
 
 		if os.isfile(outFile) and not (opts.force or _OPTIONS["force"]) then
 			local rel = path.getrelative(workDir, outFile)
@@ -303,7 +304,7 @@
 		local step1Toml = p.init.steps.renderStep1(scan, imported)
 		local step1, err1 = init.editAndValidateStep(
 			"Step 1 (Workspace & Targets)",
-			".premake-init-step1.toml",
+			".cmake-bns-init-step1.toml",
 			step1Toml,
 			p.init.steps.validateStep1,
 			opts
@@ -325,7 +326,7 @@
 			local step2Toml = p.init.steps.renderStep2(step1, step2)
 			local edited2, err2 = init.editAndValidateStep(
 				"Step 2 (Dependencies & Linking)",
-				".premake-init-step2.toml",
+				".cmake-bns-init-step2.toml",
 				step2Toml,
 				function(parsed) return p.init.steps.validateStep2(parsed, step1) end,
 				opts
@@ -345,7 +346,7 @@
 			local step3Toml = p.init.steps.renderStep3(step1, step3)
 			local edited3, err3 = init.editAndValidateStep(
 				"Step 3 (Compiler & Platform Rules)",
-				".premake-init-step3.toml",
+				".cmake-bns-init-step3.toml",
 				step3Toml,
 				function(parsed) return p.init.steps.validateStep3(parsed, step1) end,
 				opts
@@ -365,7 +366,7 @@
 			local step4Toml = p.init.steps.renderStep4(step1, step4)
 			local edited4, err4 = init.editAndValidateStep(
 				"Step 4 (Build Hooks & Debugger)",
-				".premake-init-step4.toml",
+				".cmake-bns-init-step4.toml",
 				step4Toml,
 				function(parsed) return p.init.steps.validateStep4(parsed, step1) end,
 				opts
@@ -377,7 +378,7 @@
 			step4 = edited4
 		end
 
-		-- Emit valid premake5.lua
+		-- Emit valid cmake-bns.lua
 		local luaContent = p.init.emit.generateLua({
 			step1 = step1,
 			step2 = step2,
@@ -417,7 +418,7 @@
 				return false
 			end
 		else
-			print("Done. Run `premake5 gmake`, `premake5 ninja`, or `premake5 vs2022` anytime to generate build files.")
+			print("Done. Run `cmake-bns gmake`, `cmake-bns ninja`, or `cmake-bns vs2022` anytime to generate build files.")
 		end
 
 		return true, outFile
@@ -425,7 +426,7 @@
 
 
 ---
--- Write a single, non-interactive blank TOML configuration file (`premake.toml`)
+-- Write a single, non-interactive blank TOML configuration file (`cmake-bns.toml`)
 -- containing all required and optional placeholder fields.
 ---
 	function init.writeBlankConfig(opts)
@@ -433,7 +434,7 @@
 		local workDir = path.getabsolute(opts.workDir or os.getcwd())
 		local outToml = opts.outputPath
 			or (_OPTIONS["file"] and path.getabsolute(_OPTIONS["file"]))
-			or path.join(workDir, "premake.toml")
+			or path.join(workDir, "cmake-bns.toml")
 
 		if os.isfile(outToml) and not (opts.force or _OPTIONS["force"]) then
 			local rel = path.getrelative(workDir, outToml)
@@ -459,14 +460,14 @@
 		term.pushColor(term.infoColor)
 		printf("Generated blank configuration template '%s'.", relOut)
 		term.popColor()
-		printf("Fill in the [REQUIRED] fields, then run `premake5 init --from=%s` or `premake5 gmake`.", relOut)
+		printf("Fill in the [REQUIRED] fields, then run `cmake-bns init --from=%s` or `cmake-bns gmake`.", relOut)
 		return true, outToml
 	end
 
 
 ---
--- Parse and validate a unified TOML config file (such as `premake.toml`) and
--- emit a valid `premake5.lua` without opening an interactive editor.
+-- Parse and validate a unified TOML config file (such as `cmake-bns.toml`) and
+-- emit a valid `cmake-bns.lua` without opening an interactive editor.
 ---
 	function init.generateFromToml(tomlPath, opts)
 		opts = opts or {}
@@ -497,7 +498,7 @@
 		end
 
 		local outDir = opts.workDir and path.getabsolute(opts.workDir) or path.getdirectory(absToml)
-		local outLua = opts.outputPath or path.join(outDir, "premake5.lua")
+		local outLua = opts.outputPath or path.join(outDir, "cmake-bns.lua")
 
 		local luaContent = p.init.emit.generateLua(state)
 		local okWrite, writeErr = io.writefile(outLua, luaContent)
@@ -525,7 +526,7 @@
 
 ---
 -- Scan existing CMake / Makefile (or fallback directory scan) and either write
--- a pre-populated `premake.toml` (`--import`) or emit `premake5.lua` directly (`--auto`).
+-- a pre-populated `cmake-bns.toml` (`--import`) or emit `cmake-bns.lua` directly (`--auto`).
 ---
 	function init.importExistingBuild(opts)
 		opts = opts or {}
@@ -560,7 +561,7 @@
 		if opts.emitToml then
 			local outToml = opts.outputPath
 				or (_OPTIONS["file"] and path.getabsolute(_OPTIONS["file"]))
-				or path.join(workDir, "premake.toml")
+				or path.join(workDir, "cmake-bns.toml")
 
 			if os.isfile(outToml) and not (opts.force or _OPTIONS["force"]) then
 				print(string.format("Error: '%s' already exists (use --force to overwrite).", path.getrelative(workDir, outToml)))
@@ -581,7 +582,7 @@
 		else
 			local outLua = opts.outputPath
 				or (_OPTIONS["file"] and path.getabsolute(_OPTIONS["file"]))
-				or path.join(workDir, "premake5.lua")
+				or path.join(workDir, "cmake-bns.lua")
 
 			if os.isfile(outLua) and not (opts.force or _OPTIONS["force"]) then
 				print(string.format("Error: '%s' already exists (use --force to overwrite).", path.getrelative(workDir, outLua)))
@@ -616,7 +617,7 @@
 	newaction {
 		trigger     = "init",
 		shortname   = "Interactive Configuration Wizard",
-		description = "Create premake5.lua interactively via TOML editor steps (or non-interactively with --blank / --import / --auto / --from)",
+		description = "Create cmake-bns.lua interactively via TOML editor steps (or non-interactively with --blank / --import / --auto / --from)",
 		aliases     = { "wizard" },
 
 		execute = function()
@@ -628,7 +629,7 @@
 			elseif _OPTIONS["auto"] then
 				ok = init.importExistingBuild({ emitToml = false })
 			elseif _OPTIONS["from"] then
-				local src = (_OPTIONS["from"] ~= "") and _OPTIONS["from"] or "premake.toml"
+				local src = (_OPTIONS["from"] ~= "") and _OPTIONS["from"] or "cmake-bns.toml"
 				ok = init.generateFromToml(src)
 			else
 				ok = init.runWizard()

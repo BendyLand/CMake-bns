@@ -154,7 +154,7 @@
 	if not z then
 		error("Failed to Bootstrap Premake", 0)
 	end
-	local premakeBin = path.translate("./bin/release/premake5")
+	local premakeBin = path.translate("./bin/release/cmake-bns")
 
 
 --
@@ -262,8 +262,8 @@ if kind == "binary" then
 
 	os.chdir("bin/release")
 
-	local addCommand = "git add -f premake5%s"
-	local archiveCommand = "git archive --format=%s -o ../../../%s%s stash@{0} -- ./premake5%s"
+	local addCommand = "git add -f cmake-bns%s"
+	local archiveCommand = "git archive --format=%s -o ../../../%s%s stash@{0} -- ./cmake-bns%s"
 
 	if os.ishost("windows") then
 		addCommand = string.format(addCommand, ".exe")

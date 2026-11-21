@@ -218,6 +218,7 @@
 		local filenames = {
 			fname,
 			fname .. ".lua",
+			path.join(fname, "cmake-bns.lua"),
 			path.join(fname, "premake5.lua"),
 			path.join(fname, "premake4.lua"),
 		}

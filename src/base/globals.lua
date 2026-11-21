@@ -37,11 +37,11 @@
 ---
 -- Load and run an external script file, with a bit of extra logic to make
 -- including projects easier. if "path" is a directory, will look for
--- path/premake5.lua. And each file is tracked, and loaded only once.
+-- path/cmake-bns.lua (or premake5.lua). And each file is tracked, and loaded only once.
 --
 -- @param fname
 --    The name of the directory or file to include. If a directory, will
---    automatically include the contained premake5.lua or premake4.lua
+--    automatically include the contained cmake-bns.lua, premake5.lua, or premake4.lua
 --    script at that location.
 ---
 

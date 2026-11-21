@@ -19,7 +19,7 @@ A clear and concise description of the problem that is blocking you from your de
 Describe any steps you've already taken to try to get past this issue.
 
 **What version of Premake are you using?**
-`premake5 --version` will show you the version. If you are running a "-dev" version, please make sure you are up to date with the latest master branch.
+`cmake-bns --version` will show you the version. If you are running a "-dev" version, please make sure you are up to date with the latest master branch.
 
 **Anything else we should know?**
 Add any other context about the problem here.

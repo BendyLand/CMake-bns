@@ -1,4 +1,4 @@
-Source: premake5
+Source: cmake-bns
 Section: contrib/devel
 Priority: optional
 Maintainer: Ryan Mulder <rjmyst3@gmail.com>

@@ -1451,7 +1451,7 @@
 	{
 		trigger     = "file",
 		value       = "FILE",
-		description = "Read FILE as a Premake script; default is 'premake5.lua'"
+		description = "Read FILE as a build script; default is 'cmake-bns.lua'"
 	}
 
 	newoption
@@ -1533,7 +1533,7 @@
 	{
 		trigger     = "systemscript",
 		value       = "FILE",
-		description = "Override default system script (premake5-system.lua)"
+		description = "Override default system script (cmake-bns-system.lua)"
 	}
 
 	newoption

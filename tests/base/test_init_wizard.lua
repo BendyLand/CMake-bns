@@ -1,7 +1,7 @@
 --
 -- tests/base/test_init_wizard.lua
 -- Automated tests for directory scanning, staged TOML skeletons,
--- interactive editor retry/skip flow, and real Premake baking of emitted premake5.lua.
+-- interactive editor retry/skip flow, and real Premake baking of emitted cmake-bns.lua.
 --
 
 	local suite = test.declare("base_init_wizard")
@@ -194,8 +194,9 @@ lto_in_release = true
 		test.istrue(ok)
 		test.isequal(3, editorCalls) -- Step 4 was skipped as requested
 		test.istrue(os.isfile(outFile))
+		test.isequal("cmake-bns.lua", path.getname(outFile))
 
-		-- Execute the generated premake5.lua and run Premake's real Oven + Validator
+		-- Execute the generated cmake-bns.lua and run Premake's real Oven + Validator
 		p.api.reset()
 		p.action.set("gmake")
 		local prevDir = os.getcwd()
@@ -233,6 +234,7 @@ lto_in_release = true
 		})
 		test.istrue(okBlank)
 		test.istrue(os.isfile(blankPath))
+		test.isequal("cmake-bns.toml", path.getname(blankPath))
 
 		local blankRaw = io.readfile(blankPath)
 		local blankParsed, parseErr = p.toml.parse(blankRaw)
@@ -251,7 +253,7 @@ lto_in_release = true
 		test.isnil(invalidState)
 		test.istrue(#valErrs >= 4)
 
-		-- Fill ONLY the required fields + a couple optional fields in premake.toml
+		-- Fill ONLY the required fields + a couple optional fields in cmake-bns.toml
 		local edited = blankRaw
 			:gsub('name = ""', 'name = "BlankDemo"', 1)
 			:gsub('name    = ""', 'name    = "demo_bin"', 1)

@@ -37,7 +37,7 @@ install: build
 	dh_prep
 	dh_installdirs
 
-	cp $(CURDIR)/bin/release/premake5 $(CURDIR)/debian/premake/usr/bin
+	cp $(CURDIR)/bin/release/cmake-bns $(CURDIR)/debian/premake/usr/bin
 
 binary-indep: build install
 

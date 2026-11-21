@@ -9,12 +9,12 @@
 -- worry about the /scripts argument and all that.
 --
 
-	solution "Premake5"
+	solution "cmake-bns"
 		configurations { "Release", "Debug" }
 		location ( _OPTIONS["to"] )
 
-	project "Premake5"
-		targetname  "premake5"
+	project "cmake-bns"
+		targetname  "cmake-bns"
 		language    "C"
 		kind        "ConsoleApp"
 		defines     { "PREMAKE_NO_BUILTIN_SCRIPTS" }

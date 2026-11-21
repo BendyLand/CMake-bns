@@ -68,11 +68,11 @@ BEGIN
         BLOCK "040904E4"
         BEGIN
             VALUE "CompanyName", "Jess Perkins and the Premake Project"
-            VALUE "FileDescription", "Premake5"
+            VALUE "FileDescription", "cmake-bns"
             VALUE "FileVersion", PREMAKE_VERSION
             VALUE "LegalCopyright", PREMAKE_COPYRIGHT
-            VALUE "OriginalFilename", "premake5.exe"
-            VALUE "ProductName", "Premake5"
+            VALUE "OriginalFilename", "cmake-bns.exe"
+            VALUE "ProductName", "cmake-bns"
             VALUE "ProductVersion", PREMAKE_VERSION
         END
     END

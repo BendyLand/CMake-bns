@@ -70,15 +70,15 @@ Alternatively, you may call the Makefile directly:
  files for your toolset by running a command like the following in the
  top-level Premake directory:
 
-    $ premake5 gmake  # for makefiles
-    $ premake5 vs2012 # for a Visual Studio 2012 solution
-    $ premake --help  # to see a list of supported toolsets
+    $ cmake-bns gmake  # for makefiles
+    $ cmake-bns vs2012 # for a Visual Studio 2012 solution
+    $ cmake-bns --help # to see a list of supported toolsets
 
  If this is the first time you have built Premake, or if you have made
  changes to the Lua scripts, you should prepare them to be embedded into the
  Premake executable.
 
-    $ premake5 embed
+    $ cmake-bns embed
 
  This creates a C file (at src/host/scripts.c) which contains all of the
  Lua scripts as static string buffers. These then get compiled into the
@@ -94,7 +94,7 @@ RUNNING THE TESTS
  Once you have built an executable, you can verify it by running Premake's
  unit test suites. From the top-level Premake folder, run:
 
-    $ bin/release/premake5 test
+    $ bin/release/cmake-bns test
 
 
 RUNTIME SCRIPT LOADING
@@ -105,11 +105,11 @@ RUNTIME SCRIPT LOADING
  development.
 
  If you are running Premake from the top of its own source tree (where its
- premake5.lua is located) you will get this behavior automatically. If you
+ cmake-bns.lua is located) you will get this behavior automatically. If you
  are running Premake from some other location, use the --scripts option to
  provide the path to that top-level folder:
 
-    $ bin/release/premake5 --scripts=../path/to/premake test
+    $ bin/release/cmake-bns --scripts=../path/to/premake test
 
  If you find yourself doing this repeatedly, or if you want Premake to be
  able to find other, custom scripts, you can also set a search path with the
@@ -120,7 +120,7 @@ BUILDING deb BINARY PACKAGE
 
  0. sudo apt install devscripts
  1. bootstrap the premake
- 2. ./bin/release/premake5 gmake
+ 2. ./bin/release/cmake-bns gmake
  3. cp ./packages/debian ./debian
  4. debuild --no-lintian --no-sign
  5. the built package should appear in the parent dir.

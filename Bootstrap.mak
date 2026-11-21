@@ -192,11 +192,11 @@ windows-base: windows-clean
 	.\build\bootstrap\premake_bootstrap --arch=$(PLATFORM) --to=build/bootstrap $(PREMAKE_OPTS) $(MSDEV)
 
 windows: windows-base
-	devenv .\build\bootstrap\Premake5.$(SLN_EXT) /Upgrade
-	devenv .\build\bootstrap\Premake5.$(SLN_EXT) /Build "$(CONFIG)|$(PLATFORM:x86=win32)"
+	devenv .\build\bootstrap\cmake-bns.$(SLN_EXT) /Upgrade
+	devenv .\build\bootstrap\cmake-bns.$(SLN_EXT) /Build "$(CONFIG)|$(PLATFORM:x86=win32)"
 
 windows-msbuild: windows-base
-	msbuild /p:Configuration=$(CONFIG) /p:Platform=$(PLATFORM:x86=win32) .\build\bootstrap\Premake5.$(SLN_EXT)
+	msbuild /p:Configuration=$(CONFIG) /p:Platform=$(PLATFORM:x86=win32) .\build\bootstrap\cmake-bns.$(SLN_EXT)
 
 windows-gmake-clean: windows-clean
 

@@ -2,7 +2,7 @@
 -- Output a list of merged PRs since last release in the CHANGES.txt format.
 ---
 
-local usage = "Usage: premake5 --file=scripts/changes.lua --since=<rev> changes"
+local usage = "Usage: cmake-bns --file=scripts/changes.lua --since=<rev> changes"
 
 local sinceRev = _OPTIONS["since"]
 

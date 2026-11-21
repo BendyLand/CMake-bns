@@ -39,9 +39,9 @@ jobs:
     - name: Build
       run: PLATFORM=${{ matrix.target.platform }} CONFIG=${{ matrix.config }} PREMAKE_OPTS="--lib-src=${{ matrix.depsrc }} --cc=${{ matrix.cc }}" ./Bootstrap.sh
     - name: Test
-      run: bin/${{ matrix.config }}/premake5 test --test-all
+      run: bin/${{ matrix.config }}/cmake-bns test --test-all
     - name: Docs check
-      run: bin/${{ matrix.config }}/premake5 docs-check
+      run: bin/${{ matrix.config }}/cmake-bns docs-check
     - name: Upload Artifacts
       if: matrix.config == 'release' && matrix.depsrc == 'contrib' && matrix.cc == 'gcc'
       uses: actions/upload-artifact@v7
@@ -66,9 +66,9 @@ jobs:
     - name: Build
       run: PLATFORM=${{ matrix.platform }} CONFIG=${{ matrix.config }} ./Bootstrap.sh
     - name: Test
-      run: bin/${{ matrix.config }}/premake5 test --test-all
+      run: bin/${{ matrix.config }}/cmake-bns test --test-all
     - name: Docs check
-      run: bin/${{ matrix.config }}/premake5 docs-check
+      run: bin/${{ matrix.config }}/cmake-bns docs-check
     - name: Upload Artifacts
       if: matrix.config == 'release'
       uses: actions/upload-artifact@v7
@@ -101,10 +101,10 @@ jobs:
         CONFIG: ${{ matrix.config }}
       run: ./Bootstrap.bat ${{ matrix.msdev }} "PREMAKE_OPTS=--cc=${{ matrix.cc }}"
     - name: Test
-      run: bin\${{ matrix.config }}\premake5 test --test-all
+      run: bin\${{ matrix.config }}\cmake-bns test --test-all
       shell: cmd
     - name: Docs check
-      run: bin\${{ matrix.config }}\premake5 docs-check
+      run: bin\${{ matrix.config }}\cmake-bns docs-check
       shell: cmd
     - name: Upload Artifacts
       if: matrix.config == 'release' && matrix.cc == 'msc'
@@ -156,9 +156,9 @@ jobs:
     - name: Build
       run: PLATFORM=${{ matrix.platform }} CONFIG=${{ matrix.config }} PREMAKE_OPTS="--lib-src=${{ matrix.depsrc }} --cc=${{ matrix.cc }}" ./Bootstrap.sh
     - name: Test
-      run: bin/${{ matrix.config }}/premake5.exe test --test-all
+      run: bin/${{ matrix.config }}/cmake-bns.exe test --test-all
     - name: Docs check
-      run: bin/${{ matrix.config }}/premake5.exe docs-check
+      run: bin/${{ matrix.config }}/cmake-bns.exe docs-check
     - name: Upload Artifacts
       if: matrix.config == 'release' && matrix.depsrc == 'contrib' && matrix.cc == 'gcc'
       uses: actions/upload-artifact@v7
@@ -185,7 +185,7 @@ jobs:
         PLATFORM: ${{ matrix.platform }}
         CONFIG: ${{ matrix.config }}
     - name: Test
-      run: bin/${{ matrix.config }}/premake5.exe test --test-all
+      run: bin/${{ matrix.config }}/cmake-bns.exe test --test-all
   windows-ninja-msc:
     runs-on: windows-2022
     strategy:
@@ -206,7 +206,7 @@ jobs:
         PLATFORM: ${{ matrix.platform }}
         CONFIG: ${{ matrix.config }}
     - name: Test
-      run: bin/${{ matrix.config }}/premake5.exe test --test-all
+      run: bin/${{ matrix.config }}/cmake-bns.exe test --test-all
   linux-ninja:
     runs-on: ubuntu-latest
     strategy:
@@ -224,7 +224,7 @@ jobs:
     - name: Build with ninja
       run: CONFIG=${{ matrix.config }} PREMAKE_OPTS="--cc=${{ matrix.cc }}" ./Bootstrap.sh -ninja
     - name: Test
-      run: bin/${{ matrix.config }}/premake5 test --test-all
+      run: bin/${{ matrix.config }}/cmake-bns test --test-all
   macos-ninja:
     runs-on: macos-latest
     strategy:
@@ -240,7 +240,7 @@ jobs:
     - name: Build with ninja
       run: PLATFORM=${{ matrix.platform }} CONFIG=${{ matrix.config }} ./Bootstrap.sh -ninja
     - name: Test
-      run: bin/${{ matrix.config }}/premake5 test --test-all
+      run: bin/${{ matrix.config }}/cmake-bns test --test-all
   cosmopolitan:
     runs-on: ubuntu-latest
     strategy:
@@ -257,15 +257,15 @@ jobs:
     - name: Build
       run: PLATFORM=${{ matrix.platform }} CONFIG=${{ matrix.config }} ./Bootstrap.sh -cosmo
     - name: Test
-      run: bin/${{ matrix.config }}/premake5 test --test-all
+      run: bin/${{ matrix.config }}/cmake-bns test --test-all
     - name: Docs check
-      run: bin/${{ matrix.config }}/premake5 docs-check
+      run: bin/${{ matrix.config }}/cmake-bns docs-check
     - name: Upload Artifacts
       if: matrix.config == 'release'
       uses: actions/upload-artifact@v7
       with:
         name: premake-cosmopolitan-universal
-        path: bin/${{ matrix.config }}/premake5
+        path: bin/${{ matrix.config }}/cmake-bns
   freebsd:
     runs-on: ubuntu-latest
     strategy:
@@ -294,11 +294,11 @@ jobs:
     - name: Test
       run: |
         cd $GITHUB_WORKSPACE
-        bin/${{ matrix.config }}/premake5 test --test-all
+        bin/${{ matrix.config }}/cmake-bns test --test-all
     - name: Docs check
       run: |
         cd $GITHUB_WORKSPACE
-        bin/${{ matrix.config }}/premake5 docs-check
+        bin/${{ matrix.config }}/cmake-bns docs-check
     - name: Upload Artifacts
       if: matrix.config == 'release' && matrix.cc == 'clang'
       uses: actions/upload-artifact@v7
@@ -333,11 +333,11 @@ jobs:
     - name: Test
       run: |
         cd $GITHUB_WORKSPACE
-        bin/${{ matrix.config }}/premake5 test --test-all
+        bin/${{ matrix.config }}/cmake-bns test --test-all
     - name: Docs check
       run: |
         cd $GITHUB_WORKSPACE
-        bin/${{ matrix.config }}/premake5 docs-check
+        bin/${{ matrix.config }}/cmake-bns docs-check
     - name: Upload Artifacts
       if: matrix.config == 'release' && matrix.cc == 'clang'
       uses: actions/upload-artifact@v7
@@ -369,8 +369,8 @@ jobs:
         run: |
           cd $GITHUB_WORKSPACE
           PLATFORM=${{ matrix.platform }} CONFIG=${{ matrix.config }} PREMAKE_OPTS="--cc=${{ matrix.cc }}" ./Bootstrap.sh
-          bin/${{ matrix.config }}/premake5 test --test-all
-          bin/${{ matrix.config }}/premake5 docs-check
+          bin/${{ matrix.config }}/cmake-bns test --test-all
+          bin/${{ matrix.config }}/cmake-bns docs-check
     - name: Upload Artifacts
       if: matrix.config == 'release'
       uses: actions/upload-artifact@v7
@@ -400,8 +400,8 @@ jobs:
         run: |
           cd $GITHUB_WORKSPACE
           PLATFORM=${{ matrix.platform }} CONFIG=${{ matrix.config }} PREMAKE_OPTS="--cc=${{ matrix.cc }}" ./Bootstrap.sh
-          bin/${{ matrix.config }}/premake5 test --test-all
-          bin/${{ matrix.config }}/premake5 docs-check
+          bin/${{ matrix.config }}/cmake-bns test --test-all
+          bin/${{ matrix.config }}/cmake-bns docs-check
     - name: Upload Artifacts
       if: matrix.config == 'release' && matrix.cc == 'gcc'
       uses: actions/upload-artifact@v7
@@ -432,8 +432,8 @@ jobs:
         run: |
           cd $GITHUB_WORKSPACE
           CC=${{ matrix.cc }} PLATFORM=${{ matrix.platform }} CONFIG=${{ matrix.config }} PREMAKE_OPTS="--cc=${{ matrix.cc }}" ./Bootstrap.sh
-          bin/${{ matrix.config }}/premake5 test --test-all
-          bin/${{ matrix.config }}/premake5 docs-check
+          bin/${{ matrix.config }}/cmake-bns test --test-all
+          bin/${{ matrix.config }}/cmake-bns docs-check
     - name: Upload Artifacts
       if: matrix.config == 'release' && matrix.cc == 'gcc'
       uses: actions/upload-artifact@v7
@@ -463,8 +463,8 @@ jobs:
         run: |
           cd $GITHUB_WORKSPACE
           CC=${{ matrix.cc }} PLATFORM=${{ matrix.platform }} CONFIG=${{ matrix.config }} PREMAKE_OPTS="--cc=${{ matrix.cc }}" ./Bootstrap.sh
-          bin/${{ matrix.config }}/premake5 test --test-all
-          bin/${{ matrix.config }}/premake5 docs-check
+          bin/${{ matrix.config }}/cmake-bns test --test-all
+          bin/${{ matrix.config }}/cmake-bns docs-check
     - name: Upload Artifacts
       if: matrix.config == 'release' && matrix.cc == 'gcc'
       uses: actions/upload-artifact@v7

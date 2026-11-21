@@ -4,6 +4,6 @@ Premake extension to support writing the raw lua tables.
 
 Simply generate your project using the `raw` action:
 ```bash
-premake5 raw
+cmake-bns raw
 ```
 and open the generated workspace.raw file in any text editor.

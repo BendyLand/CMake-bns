@@ -6,7 +6,7 @@
 
 * Update `CHANGES.txt`
 	* Set version at top of file
-	* `premake5 --file=scripts/changes.lua --since=<last_release_rev> changes`
+	* `cmake-bns --file=scripts/changes.lua --since=<last_release_rev> changes`
 	* Review and clean up as needed
 
 * Update `README.md`
@@ -22,9 +22,9 @@
 
 ## RELEASE
 
-* Run `premake5 package <release branch name> source` (from Posix ideally)
+* Run `cmake-bns package <release branch name> source` (from Posix ideally)
 
-* On each platform, run `premake5 package <release branch name> binary`
+* On each platform, run `cmake-bns package <release branch name> binary`
 
 * Submit Windows binary to [Microsoft malware analysis](https://www.microsoft.com/en-us/wdsi/filesubmission/) _(Can no longer do this unless it has already been flagged as malware; needs the failing signature in order to submit.)_
 

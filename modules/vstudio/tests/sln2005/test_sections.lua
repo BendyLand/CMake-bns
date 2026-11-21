@@ -16,7 +16,7 @@
 	local wks
 
 	function suite.setup()
-		_MAIN_SCRIPT = "c:\\test\\premake5.lua"
+		_MAIN_SCRIPT = "c:\\test\\cmake-bns.lua"
 
 		p.escaper(p.vstudio.vs2005.esc)
 		wks = workspace("MyWorkspace")
