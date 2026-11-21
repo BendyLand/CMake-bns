@@ -23,6 +23,7 @@
 		"base/http.lua",
 		"base/json.lua",
 		"base/jsonwrapper.lua",
+		"base/toml.lua",
 		"base/languages.lua",
 		"base/term.lua",
 
@@ -69,6 +70,13 @@
 
 		-- Clean action
 		"actions/clean/_clean.lua",
+
+		-- Interactive init wizard action
+		"actions/init/init_buildscan.lua",
+		"actions/init/init_scanner.lua",
+		"actions/init/init_steps.lua",
+		"actions/init/init_emit.lua",
+		"actions/init/_init.lua",
 
 		"_premake_init.lua",
 	}

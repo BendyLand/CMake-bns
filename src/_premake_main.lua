@@ -198,8 +198,73 @@
 ---
 
 	function m.runUserScript()
+		if _ACTION == "init" then
+			return
+		end
+
+		-- Support passing --file=config.toml directly to any backend action
+		if _MAIN_SCRIPT and path.hasextension(_MAIN_SCRIPT, ".toml") and os.isfile(_MAIN_SCRIPT) then
+			if p.action.isConfigurable() and not _OPTIONS["help"] and not _OPTIONS["version"] then
+				local generatedLua = path.join(_MAIN_SCRIPT_DIR, "premake5.lua")
+				local ok = p.init.generateFromToml(_MAIN_SCRIPT, {
+					outputPath  = generatedLua,
+					skipBackend = true,
+				})
+				if not ok then
+					os.exit(1)
+				end
+				_MAIN_SCRIPT = generatedLua
+				dofile(_MAIN_SCRIPT)
+			end
+			return
+		end
+
 		if os.isfile(_MAIN_SCRIPT) then
 			dofile(_MAIN_SCRIPT)
+			return
+		end
+
+		if p.action.isConfigurable() and not _OPTIONS["help"] and not _OPTIONS["version"] then
+			-- If premake.toml exists in the script directory, compile it to premake5.lua automatically
+			local defaultToml = path.join(_MAIN_SCRIPT_DIR, "premake.toml")
+			if os.isfile(defaultToml) then
+				local ok = p.init.generateFromToml(defaultToml, {
+					outputPath  = _MAIN_SCRIPT,
+					skipBackend = true,
+				})
+				if not ok then
+					os.exit(1)
+				end
+				dofile(_MAIN_SCRIPT)
+				return
+			end
+
+			if _OPTIONS["init"] or (p.init and p.init.isInteractiveTerminal()) then
+				local shouldRun = _OPTIONS["init"]
+				if not shouldRun then
+					io.write(string.format(
+						"No Premake script (%s) found. Launch interactive configuration wizard? [Y/n]: ",
+						path.getname(_MAIN_SCRIPT)
+					))
+					io.flush()
+					local ans = io.read("*l")
+					if ans then
+						ans = ans:match("^%s*(.-)%s*$"):lower()
+						shouldRun = (ans == "" or ans == "y" or ans == "yes")
+					end
+				end
+
+				if shouldRun then
+					local ok = p.init.runWizard({
+						outputPath = _MAIN_SCRIPT,
+						skipBackendPrompt = true,
+						force = true,
+					})
+					if ok and os.isfile(_MAIN_SCRIPT) then
+						dofile(_MAIN_SCRIPT)
+					end
+				end
+			end
 		end
 	end
 
